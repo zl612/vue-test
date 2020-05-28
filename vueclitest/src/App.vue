@@ -7,6 +7,7 @@
       <router-link :to="{name: 'hi1', params: { username: 'z-l' }}">-Hi页面1</router-link> |
       <router-link to="/hi/hi2">-Hi页面2</router-link> |
       <router-link to="/goback">-goback</router-link> |
+      <router-link to="/count">-count</router-link> |
           <!-- <p>{{ $route.name }}</p> -->
     </div>
     <transition-group name="fade" mode="out-in">
