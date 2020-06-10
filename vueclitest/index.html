@@ -6,7 +6,86 @@
     <title>vueclitest</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="apps">
+      {{ msg }}
+      <!-- <ul>
+        <todo-item v-for="item in list" :title="item.title" :del="item.del" ></todo-item>
+      </ul> -->
+      <todo-list>
+        <todo-item @del="handleDelete" v-for="item in list" :title="item.title" :del="item.del" >
+          <span slot="suf-icon">前置图标</span>
+          <span slot="suf-icon">后置置图标</span>
+        </todo-item>
+      </todo-list>
+      <button @click="hanldClick">
+        新增
+      </button>
+    </div>
     <!-- built files will be auto injected -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script>
+      Vue.component('todo-item', {
+        props: {
+          title: String,
+          del: {
+            type: Boolean,
+            default: false,
+          }
+        },
+        template:`
+          <li >
+            <span v-if="!del">{{title}}</span>
+            <span v-else style="text-decoration:line-through; color: red;">{{title}}</span>
+            <slot name="suf-icon"></slot>
+            <button v-show="!del" @click="handleClick">删除</button>
+          </li>
+        `,
+        methods: {
+          handleClick(e) {
+            console.log('e: ', e);
+            this.$emit('del', this.title);
+          }
+        },
+      });
+      Vue.component('todo-list', {
+        template: `
+          <ul>
+           <slot></slot>
+          </ul>
+        `,
+        methods: {
+          handleDelete(val) {
+            console.log('val: ', val);
+          }
+        },
+        data() {
+          return {
+          }
+        }
+      })
+      new Vue({
+        el: "#apps",
+        data(){
+          return {
+            msg: 'hello world!',
+            info: 'test',
+            list: [{
+              title: '课程1',
+              del: false
+            },{
+              title: '课程2',
+              del: true,
+            }],
+          }
+        },
+
+        methods: {
+          hanldClick() {
+            this.list.push(this.info);
+          },
+        }
+      });
+
+    </script>
   </body>
 </html>
