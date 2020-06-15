@@ -13,7 +13,13 @@
       </ul> -->
       <todo-list>
         <todo-item @del="handleDelete" v-for="item in list" :title="item.title" :del="item.del" >
-          <span slot="suf-icon">前置图标</span>
+          <!-- <span slot="suf-icon">前置图标</span> -->
+          <template v-slot:pre-icon="{value}">
+            <span> 前置图标 {{value}}</span>
+          </template>
+          <!-- <template v-slot:suf-icon>
+            <span> 后置置图标 </span>
+          </template> -->
           <span slot="suf-icon">后置置图标</span>
         </todo-item>
       </todo-list>
@@ -34,6 +40,7 @@
         },
         template:`
           <li >
+            <slot name="pre-icon" v-bind="{value: values }"></slot>
             <span v-if="!del">{{title}}</span>
             <span v-else style="text-decoration:line-through; color: red;">{{title}}</span>
             <slot name="suf-icon"></slot>
@@ -46,6 +53,11 @@
             this.$emit('del', this.title);
           }
         },
+        data() {
+          return {
+            values: Math.random()
+          }
+        }
       });
       Vue.component('todo-list', {
         template: `
@@ -54,12 +66,11 @@
           </ul>
         `,
         methods: {
-          handleDelete(val) {
-            console.log('val: ', val);
-          }
+         
         },
         data() {
           return {
+           
           }
         }
       })
@@ -83,6 +94,9 @@
           hanldClick() {
             this.list.push(this.info);
           },
+          handleDelete(val) {
+            console.log('val: ', val);
+          }
         }
       });
 
